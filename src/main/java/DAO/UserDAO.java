@@ -1,6 +1,8 @@
 package DAO;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import com.mongodb.client.MongoCollection;
@@ -85,10 +87,14 @@ public class UserDAO {
       System.out.println("rỗng");
       wishList = new ArrayList<WishListModel>();
     }
-    wishList.add(wListModel);
+
+    boolean remove = wishList.removeIf(s -> s.getLink().equals(wListModel.getLink()));
+
+    if (!remove) {
+      wishList.add(wListModel);
+    }
 
     userCollection.updateOne(eq(id), combine(set("wishList", wishList)));
-
     return true;
   }
 

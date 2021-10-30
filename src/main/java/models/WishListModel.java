@@ -3,7 +3,6 @@ package models;
 import org.bson.types.ObjectId;
 
 public class WishListModel {
-  private ObjectId id;
   private String name;
   private String single;
   private String img;
@@ -23,14 +22,6 @@ public class WishListModel {
     this.single = single;
     this.img = img;
     this.link = link;
-  }
-
-  public ObjectId getId() {
-    return id;
-  }
-
-  public void setId(ObjectId id) {
-    this.id = id;
   }
 
   public String getName() {

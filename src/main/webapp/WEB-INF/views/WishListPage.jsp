@@ -161,6 +161,7 @@
         src="${pageContext.request.contextPath}/assets/js/search.js"
         type="text/babel"
       ></script>
+       <script defer crossorigin src="${pageContext.request.contextPath}/assets/js/wishlist.js" type="text/babel"></script>
     </body>
   </html>
 </html>

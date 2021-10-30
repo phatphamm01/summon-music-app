@@ -53,11 +53,7 @@ public class LoginPage extends HttpServlet {
       session.setAttribute("user", user);
 
       Gson gson = new Gson();
-
       Cookie cookieWishList = new Cookie("wishlist", URLEncoder.encode(gson.toJson(user.getWishList()), "UTF-8"));
-
-      System.out.println(cookieWishList);
-
       resp.addCookie(cookieWishList);
 
       resp.sendRedirect("home");
