@@ -23,10 +23,12 @@
       <div class="box shadow-md">
         <div class="flex flex-col">
           <div class="logo__container mt-40">
+           <a href="./">
             <div class="logo cursor-pointer">
               <div class="logo__moon"></div>
               <div class="logo__sun"></div>
             </div>
+           </a>
           </div>
           <section class="form mt-10">
             <form action="" method="post">
@@ -50,8 +52,7 @@
                 </div>
                 <div class="form__control mt-6 flex justify-between">
                   <div class="control__left">
-                    <input id="checkpass" name="checkpass" type="checkbox" />
-                    <label for="checkpass">Save Password</label>
+                   
                   </div>
                   <div class="cursor-pointer control__right font-bold text-md">
                     <a href="./login">Login</a>

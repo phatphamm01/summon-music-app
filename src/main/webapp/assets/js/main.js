@@ -4,6 +4,7 @@ let audio = $("audio");
 let timeDuration = $("time-duration");
 let timeCurrent = $("time-current");
 let timeRender = $("time-render");
+let download = $("download");
 
 let setTime = $("set-time");
 

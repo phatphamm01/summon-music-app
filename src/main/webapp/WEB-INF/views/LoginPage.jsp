@@ -24,10 +24,12 @@
       <div class="box shadow-md">
         <div class="flex flex-col">
           <div class="logo__container mt-40">
+            <a href="./">
             <div class="logo cursor-pointer">
               <div class="logo__moon"></div>
               <div class="logo__sun"></div>
             </div>
+           </a>
           </div>
           <section class="form mt-10">
             <form action="" method="post">

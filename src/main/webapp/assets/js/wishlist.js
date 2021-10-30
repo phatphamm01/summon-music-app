@@ -20,15 +20,53 @@ const Top = () => {
       play.classList.add("ri-play-fill");
       audioEl.currentTime = 0;
       audioEl.src = audio;
+      download.href = audio;
       playNameEl.innerText = name;
     });
   };
 
   const handleLike = async (item) => {
+    let newData = [...data];
+
+    let index = newData.findIndex((value) => value.link === item.link);
+
+    if (index >= 0) {
+      newData[index].like = !newData[index].like;
+    }
+    setData(newData);
+
     if (idUser && idUser.value) {
-      const res = await axios.post(
+      let options = {
+        duration: 3000,
+      };
+
+      try {
+        await axios.post(
+          "./wish-list",
+          { id: idUser.value, name: item.name, img: item.img, link: item.link },
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        options.text = "Update successful !!!";
+        Toastify(options).showToast();
+      } catch (err) {
+        options.text = "Update faild !!!";
+        options.style = { background: "red" };
+        Toastify(options).showToast();
+      }
+    }
+  };
+
+  const getTopAPI = async () => {
+    if (idUser && idUser.value) {
+      let result = await axios.get(
         "./wish-list",
-        { id: idUser.value, name: item.name, img: item.img, link: item.link },
+        { params: { id: idUser.value } },
         {
           headers: {
             Accept: "application/json",
@@ -36,27 +74,39 @@ const Top = () => {
           },
         }
       );
-      console.log(res.data);
+      return (
+        result &&
+        result.data &&
+        result.data.map((value, index) => {
+          return {
+            id: index,
+            img: value.img,
+            like: true,
+            link: value.link,
+            name: value.name,
+          };
+        })
+      );
     }
   };
 
   return data && data.length > 0 ? (
     <ul className="album__list grid grid-cols-2 gap-x-6">
       {data.map((value) => (
-        <li
-          onClick={() => handleClick(value.link)}
-          key={value.id}
-          className="album__item text-center"
-        >
+        <li key={value.id} className="album__item text-center">
           <div className="img p-2">
             {idUser && idUser.value && (
               <i
                 onClick={() => handleLike(value)}
-                className="ri-heart-fill like"
+                className={`ri-heart-fill ${value.like && "like"}`}
               ></i>
             )}
 
-            <img src={value.img} alt="ảnh" />
+            <img
+              onClick={() => handleClick(value.link)}
+              src={value.img}
+              alt="ảnh"
+            />
           </div>
           <span className="name">{value.name}</span>
         </li>
@@ -70,30 +120,3 @@ const Top = () => {
 };
 
 ReactDOM.render(<Top />, document.getElementById("top"));
-
-const getTopAPI = async () => {
-  if (idUser && idUser.value) {
-    let result = await axios.get(
-      "./wish-list",
-      { params: { id: idUser.value } },
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return (
-      result &&
-      result.data &&
-      result.data.map((value, index) => {
-        return {
-          id: index,
-          img: value.img,
-          link: value.link,
-          name: value.name,
-        };
-      })
-    );
-  }
-};

@@ -31,6 +31,7 @@
         href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
         rel="stylesheet"
       />
+       <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/toastify.css" />
       <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styles.css" />
     </head>
 
@@ -144,7 +145,9 @@
                     </div>
                     <div class="box__right">
                       <i class="ri-repeat-line"></i>
-                      <i class="ri-download-2-fill"></i>
+                       <a href="${pageContext.request.contextPath}/assets/music/music.mp3" id="download" class="cursor-pointer">
+                        <i class="ri-download-2-fill"></i>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -153,6 +156,7 @@
           </div>
         </div>
       </div>
+      <script src="${pageContext.request.contextPath}/assets/js/toastify.js"></script>
       <script defer src="${pageContext.request.contextPath}/assets/js/main.js"></script>
       <script defer src="${pageContext.request.contextPath}/assets/js/common.js"></script>
       <script

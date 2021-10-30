@@ -30,6 +30,7 @@ const Search = () => {
       audioEl.currentTime = 0;
       audioEl.src = audio;
       playNameEl.innerText = name;
+      download.href = audio;
 
       setValue("");
       setData([]);
