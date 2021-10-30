@@ -1,0 +1,169 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100;200;300;400;500;600&display=swap");
+:root {
+  --primary-color: #8d5af0;
+  --bg-color: #2a1454;
+}
+
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.loader {
+  border-top-color: #4e259b;
+  -webkit-animation: spinner 1.5s linear infinite;
+  animation: spinner 1.5s linear infinite;
+}
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+body {
+  font-family: "Be Vietnam Pro", sans-serif !important;
+  color: white;
+}
+
+i {
+  color: #8d5af0;
+  filter: drop-shadow(0px 0px 4px #7833ff);
+}
+
+.container-m {
+  padding: 0 3rem;
+}
+
+.mobile {
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box {
+  width: 460px;
+  height: 900px;
+  overflow: hidden;
+
+  background-image: linear-gradient(294deg, #321764, #19113b);
+
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  // backdrop-filter: blur(20px);
+
+  border-radius: 30px;
+}
+
+.logo {
+  --size: 3rem;
+  height: var(--size);
+  aspect-ratio: 1 / 1;
+  position: relative;
+  left: 30%;
+
+  &::after {
+    filter: drop-shadow(0px 0px 4px #7833ff);
+    content: "Summon";
+    position: absolute;
+    left: 140%;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-color);
+    font-size: 30px;
+    font-weight: 400;
+  }
+
+  &__moon {
+    height: var(--size);
+    aspect-ratio: 1 / 1;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+  }
+
+  &__sun {
+    height: calc(var(--size) - var(--size) * 0.1);
+    aspect-ratio: 1 / 1;
+    background: var(--primary-color);
+    border-radius: 50%;
+    border: 3px solid var(--bg-color);
+    position: absolute;
+
+    top: 50%;
+    transform: translateY(-44%);
+    right: -25%;
+  }
+}
+
+.form {
+  .input {
+    border-bottom: 3px solid var(--primary-color);
+
+    margin-top: 18px;
+    input {
+      outline: none;
+      border: none;
+      background-color: transparent !important;
+      width: 100%;
+      padding: 10px;
+    }
+  }
+
+  &__control {
+    margin-left: 4px;
+    margin-right: 4px;
+    font-size: 12px;
+    cursor: default;
+    text-align: center;
+    input {
+      margin-right: 2px;
+      transform: translateY(2px);
+    }
+
+    p {
+      display: inline;
+    }
+
+    span {
+      font-weight: 600;
+      color: var(--primary-color);
+      cursor: pointer;
+    }
+  }
+
+  &__btn {
+    display: block;
+    margin: 0 auto;
+    margin-top: 1.2rem;
+
+    background-color: var(--primary-color);
+    outline: none;
+    border: none;
+    padding: 10px 30px;
+
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+}
