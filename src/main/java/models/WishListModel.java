@@ -1,7 +1,5 @@
 package models;
 
-import org.bson.types.ObjectId;
-
 public class WishListModel {
   private String name;
   private String single;

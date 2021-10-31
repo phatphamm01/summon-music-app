@@ -2,10 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -15,40 +12,42 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONArray;
 
 import DAO.UserDAO;
+import config.UTF8;
 import models.UserModel;
-import models.WishListModel;
 
 @WebServlet(urlPatterns = "/login")
 public class LoginPage extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    resp.setCharacterEncoding("UTF-8");
-    req.setCharacterEncoding("UTF-8");
+    UTF8.set(req, resp);
 
-    RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/views/" + "LoginPage.jsp");
-    rd.forward(req, resp);
+    req.getRequestDispatcher("/WEB-INF/views/" + "LoginPage.jsp").forward(req, resp);
   }
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    resp.setCharacterEncoding("UTF-8");
-    req.setCharacterEncoding("UTF-8");
-    HttpSession session = req.getSession();
-    ServletContext sc = getServletContext();
-    String url = "";
+    UTF8.set(req, resp);
 
+    String url = "";
+    boolean checkLogin = this.handleLogin(req, resp, url);
+
+    if (!checkLogin) {
+      req.getRequestDispatcher(url).forward(req, resp);
+    }
+  }
+
+  private boolean handleLogin(HttpServletRequest req, HttpServletResponse resp, String url)
+      throws ServletException, IOException {
     String username = req.getParameter("username");
     String password = req.getParameter("password");
+
+    HttpSession session = req.getSession();
 
     UserDAO userDao = new UserDAO();
 
     try {
-      url = "/WEB-INF/views/" + "LoginPage.jsp";
       UserModel user = userDao.login(username, password);
       session.setAttribute("user", user);
 
@@ -57,13 +56,12 @@ public class LoginPage extends HttpServlet {
       resp.addCookie(cookieWishList);
 
       resp.sendRedirect("home");
-      return;
+      return true;
     } catch (Exception err) {
-      System.out.println(err);
       url = "/WEB-INF/views/" + "LoginPage.jsp";
       req.setAttribute("message", err.getMessage());
     }
 
-    sc.getRequestDispatcher(url).forward(req, resp);
+    return false;
   }
 }

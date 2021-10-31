@@ -3,7 +3,6 @@ package controllers;
 import java.io.IOException;
 import java.net.URLEncoder;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 
 import DAO.UserDAO;
+import config.UTF8;
 import models.UserModel;
 
 @WebServlet(urlPatterns = "/home")
@@ -22,27 +22,26 @@ public class HomePage extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    resp.setCharacterEncoding("UTF-8");
-    req.setCharacterEncoding("UTF-8");
-    System.out.println("Hello World");
+    UTF8.set(req, resp);
 
+    this.getUser(req, resp);
+
+    req.getRequestDispatcher("/WEB-INF/views/" + "HomePage.jsp").forward(req, resp);
+  }
+
+  private void getUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     HttpSession session = req.getSession();
-
     UserModel user = (UserModel) session.getAttribute("user");
 
-    if (user != null) {
-
-      UserDAO userDao = new UserDAO();
-
-      Gson gson = new Gson();
-      Cookie cookieWishList = new Cookie("wishlist",
-          URLEncoder.encode(gson.toJson(userDao.getWishList(user.getId())), "UTF-8"));
-      resp.addCookie(cookieWishList);
-
-      req.setAttribute("user", user);
+    if (user == null) {
+      return;
     }
 
-    RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/views/" + "HomePage.jsp");
-    rd.forward(req, resp);
+    UserDAO userDao = new UserDAO();
+    Gson gson = new Gson();
+    Cookie cookieWishList = new Cookie("wishlist",
+        URLEncoder.encode(gson.toJson(userDao.getWishList(user.getId())), "UTF-8"));
+
+    resp.addCookie(cookieWishList);
   }
 }

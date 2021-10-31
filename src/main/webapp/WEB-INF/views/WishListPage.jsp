@@ -32,7 +32,7 @@
         rel="stylesheet"
       />
        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/toastify.css" />
-      <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styles.css" />
+      <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/home.css" />
     </head>
 
     <body class="bg-gray-900">
