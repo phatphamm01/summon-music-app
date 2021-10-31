@@ -140,7 +140,9 @@
                      <a href="./">
                         <i class="ri-home-fill"></i>
                       </a>
-                      <i class="ri-heart-fill"></i>
+                      <a href="./wishlist">
+                        <i class="ri-heart-fill"></i>
+                      </a>
                     </div>
                     <div class="box__center">
                       <i id="play" class="ri-play-fill cursor-pointer"></i>

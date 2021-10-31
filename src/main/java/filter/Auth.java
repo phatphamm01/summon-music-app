@@ -22,7 +22,7 @@ public class Auth implements Filter {
     HttpServletResponse resp = (HttpServletResponse) response;
 
     if (!this.checkLogin(request, response, chain)) {
-      resp.sendRedirect("home");
+      resp.sendRedirect("login");
       return;
     }
 

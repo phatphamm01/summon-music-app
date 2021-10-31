@@ -31,15 +31,16 @@ public class LoginPage extends HttpServlet {
     UTF8.set(req, resp);
 
     String url = "";
-    boolean checkLogin = this.handleLogin(req, resp, url);
+    boolean checkLogin = this.handleLogin(req, resp);
 
     if (!checkLogin) {
+      System.out.println("fail");
+      url = "/WEB-INF/views/" + "LoginPage.jsp";
       req.getRequestDispatcher(url).forward(req, resp);
     }
   }
 
-  private boolean handleLogin(HttpServletRequest req, HttpServletResponse resp, String url)
-      throws ServletException, IOException {
+  private boolean handleLogin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     String username = req.getParameter("username");
     String password = req.getParameter("password");
 
@@ -58,7 +59,6 @@ public class LoginPage extends HttpServlet {
       resp.sendRedirect("home");
       return true;
     } catch (Exception err) {
-      url = "/WEB-INF/views/" + "LoginPage.jsp";
       req.setAttribute("message", err.getMessage());
     }
 

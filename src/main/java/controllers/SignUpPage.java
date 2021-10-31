@@ -2,8 +2,6 @@ package controllers;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,13 +25,16 @@ public class SignupPage extends HttpServlet {
     UTF8.set(req, resp);
 
     String url = "";
-    this.handleSignup(req, resp, url);
+    boolean checkSignup = this.handleSignup(req, resp);
 
-    req.getRequestDispatcher(url).forward(req, resp);
+    if (!checkSignup) {
+      System.out.println("fail");
+      url = "/WEB-INF/views/" + "SignUpPage.jsp";
+      req.getRequestDispatcher(url).forward(req, resp);
+    }
   }
 
-  private void handleSignup(HttpServletRequest req, HttpServletResponse resp, String url)
-      throws ServletException, IOException {
+  private boolean handleSignup(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     String fullname = req.getParameter("fullname");
     String username = req.getParameter("username");
     String password = req.getParameter("password");
@@ -44,10 +45,11 @@ public class SignupPage extends HttpServlet {
       userDao.register(fullname, username, password);
 
       resp.sendRedirect("login");
-      return;
+      return true;
     } catch (Exception err) {
-      url = "/WEB-INF/views/" + "SignUpPage.jsp";
       req.setAttribute("message", err.getMessage());
     }
+
+    return false;
   }
 }

@@ -137,8 +137,12 @@
                 <div class="container-m container-menu">
                   <div class="menu flex justify-around items-center text-2xl">
                     <div class="box__left">
-                      <i class="ri-home-fill"></i>
-                      <i class="ri-heart-fill"></i>
+                      <a href="./">
+                        <i class="ri-home-fill"></i>
+                      </a>
+                      <a href="./wishlist">
+                        <i class="ri-heart-fill"></i>
+                      </a>
                     </div>
                     <div class="box__center">
                       <i id="play" class="ri-play-fill cursor-pointer"></i>
