@@ -18,8 +18,9 @@ public class DatabaseConnect {
   private MongoDatabase dataBase;
 
   public DatabaseConnect(String nameDB) {
-    mongoClient = MongoClients.create(
-        "mongodb+srv://phatphamm01:JHK5ahYrQeA3jxB5@cluster0.dbjqr.mongodb.net/musicapp?retryWrites=true&w=majority&ssl=true");
+    // mongoClient = MongoClients.create(
+    // "mongodb+srv://phatphamm01:JHK5ahYrQeA3jxB5@cluster0.dbjqr.mongodb.net/musicapp?retryWrites=true&w=majority&ssl=true");
+    mongoClient = MongoClients.create();
 
     pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
         fromProviders(PojoCodecProvider.builder().automatic(true).build()));
