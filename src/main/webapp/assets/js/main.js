@@ -1,79 +1,121 @@
 const $ = (name) => document.getElementById(name);
 
-let audio = $("audio");
-let timeDuration = $("time-duration");
-let timeCurrent = $("time-current");
-let timeRender = $("time-render");
-let download = $("download");
+const renderNumber = (number) =>
+  ('' + number).length === 1 ? `0${number}` : number;
 
-let setTime = $("set-time");
-
-let play = $("play");
-
-const renderNumber = (number) => {
-  if (("" + number).length === 1) {
-    return `0${number}`;
+class Audio {
+  constructor() {
+    this.audioEl = $('audio');
+    this.playEl = $('play');
+    this.playNameEl = $('play-name');
+    this.setTimeEl = $('set-time');
+    this.downloadEl = $('download');
+    this.timeRenderEl = $('time-render');
+    this.timeCurrentEl = $('time-current');
+    this.timeDurationEl = $('time-duration');
   }
-  return number;
-};
 
-audio.addEventListener("play", () => {
-  play.classList.remove("ri-play-fill");
-  play.classList.add("ri-pause-fill");
-  console.log("play");
-});
-
-audio.addEventListener("pause", () => {
-  play.classList.remove("ri-pause-fill");
-  play.classList.add("ri-play-fill");
-  console.log("pause");
-});
-
-audio.addEventListener("loadeddata", () => {
-  console.log("done!!!");
-  let duration = audio.duration;
-
-  let mins = Math.floor(duration / 60);
-  let seconds = Math.round(duration) - mins * 60;
-
-  timeDuration.innerText = `${mins}:${renderNumber(seconds)}`;
-});
-
-audio.addEventListener("timeupdate", (ev) => {
-  let duration = audio.duration;
-  _duration = duration;
-  let currentTime = audio.currentTime;
-  let parcent = (currentTime / duration) * 100;
-  timeRender.style.width = `${parcent + 4.5}%`;
-
-  let mins = Math.floor(currentTime / 60);
-  let seconds = Math.round(currentTime) - mins * 60;
-  timeCurrent.innerText = `${mins}:${renderNumber(seconds)}`;
-});
-
-setTime.addEventListener("click", (ev) => {
-  audio.play();
-  let parcent = ev.offsetX / setTime.offsetWidth;
-  let duration = audio.duration;
-  if (audio && audio.currentTime) {
-    audio.currentTime = parcent * duration;
+  play() {
+    this.audioEl.play();
   }
-});
 
-function playMusic() {
-  if (!audio.paused) {
-    audio.pause();
-  } else {
-    audio.play();
+  pause() {
+    this.audioEl.pause();
+  }
+
+  timeCurrent() {
+    return this.audioEl.currentTime;
+  }
+
+  timeDuration() {
+    return this.audioEl.duration;
+  }
+
+  handlePlay() {
+    this.playEl.classList.remove('ri-play-fill');
+    this.playEl.classList.add('ri-pause-fill');
+    console.log('play');
+  }
+
+  handlePause() {
+    this.playEl.classList.remove('ri-pause-fill');
+    this.playEl.classList.add('ri-play-fill');
+    console.log('pause');
+  }
+
+  handleTime(currentTime) {
+    let mins = Math.floor(currentTime / 60);
+    let seconds = Math.round(currentTime) - mins * 60;
+
+    return { mins, seconds };
+  }
+
+  setSlidePlay(currentTime, duration) {
+    let parcent = (currentTime / duration) * 100;
+    this.timeRenderEl.style.width = `${parcent + 4.5}%`;
+  }
+
+  setTimeDuration(time) {
+    this.timeDurationEl.innerText = time;
+  }
+
+  setAudio(audio, name) {
+    this.audioEl.pause();
+    this.timeRenderEl.style.width = `4.5%`;
+    this.playEl.classList.remove('ri-pause-fill');
+    this.playEl.classList.add('ri-play-fill');
+    this.audioEl.currentTime = 0;
+    this.audioEl.src = audio;
+    this.downloadEl.href = audio;
+    this.playNameEl.innerText = name;
+  }
+
+  addEvent() {
+    this.audioEl.addEventListener('play', this.handlePlay.bind(this), false);
+
+    this.audioEl.addEventListener('pause', this.handlePause.bind(this), false);
+
+    this.audioEl.addEventListener('timeupdate', (ev) => {
+      let duration = this.timeDuration();
+      let currentTime = this.timeCurrent();
+
+      this.setSlidePlay(currentTime, duration);
+
+      let time = this.handleTime(duration);
+      this.setTimeDuration(`${time.mins}:${renderNumber(time.seconds)}`);
+    });
+
+    var playMusic = function () {
+      return !Main.audioEl.paused ? Main.audioEl.pause() : Main.audioEl.play();
+    };
+
+    this.audioEl.addEventListener('loadstart', (ev) => {
+      console.log('can play');
+      this.setTimeDuration('00:00');
+
+      this.playEl.addEventListener('click', playMusic, true);
+    });
+
+    this.audioEl.addEventListener('emptied', (ev) => {
+      console.log('cancel play');
+
+      this.playEl.removeEventListener('click', playMusic, true);
+    });
+
+    this.audioEl.addEventListener('loadedmetadata', (ev) => {});
+
+    this.setTimeEl.addEventListener('click', (ev) => {
+      this.play();
+
+      let parcent = ev.offsetX / this.setTimeEl.offsetWidth;
+      let duration = this.audioEl.duration;
+
+      if (this.audioEl && this.audioEl.currentTime) {
+        this.audioEl.currentTime = parcent * duration;
+      }
+    });
   }
 }
 
-audio.addEventListener("emptied", (ev) => {
-  console.log("cancel play");
-  play.removeEventListener("click", playMusic, true);
-});
-
-audio.addEventListener("loadstart", (ev) => {
-  console.log("can play");
-  play.addEventListener("click", playMusic, true);
-});
+var Main = new Audio();
+Main.addEvent();

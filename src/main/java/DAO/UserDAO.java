@@ -9,8 +9,8 @@ import org.bson.types.ObjectId;
 
 import config.DatabaseConnect;
 import helpler.Encryption;
-import models.UserModel;
-import models.WishListModel;
+import model.UserModel;
+import model.WishListModel;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.*;

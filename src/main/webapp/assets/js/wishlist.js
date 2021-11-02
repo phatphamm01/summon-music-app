@@ -1,6 +1,6 @@
 const { useEffect, useState } = React;
 
-let idUser = $("idUser");
+let idUser = $('idUser');
 
 const Top = () => {
   let [data, setData] = useState([]);
@@ -14,14 +14,7 @@ const Top = () => {
 
   const handleClick = (link) => {
     getLinkAPI(link).then(({ audio, name }) => {
-      audioEl.pause();
-      timeRender.style.width = `4.5%`;
-      play.classList.remove("ri-pause-fill");
-      play.classList.add("ri-play-fill");
-      audioEl.currentTime = 0;
-      audioEl.src = audio;
-      download.href = audio;
-      playNameEl.innerText = name;
+      Main.setAudio(audio, name);
     });
   };
 
@@ -42,21 +35,21 @@ const Top = () => {
 
       try {
         await axios.post(
-          "./wish-list",
+          './wish-list',
           { id: idUser.value, name: item.name, img: item.img, link: item.link },
           {
             headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
             },
           }
         );
 
-        options.text = "Update successful !!!";
+        options.text = 'Update successful !!!';
         Toastify(options).showToast();
       } catch (err) {
-        options.text = "Update faild !!!";
-        options.style = { background: "red" };
+        options.text = 'Update faild !!!';
+        options.style = { background: 'red' };
         Toastify(options).showToast();
       }
     }
@@ -65,12 +58,12 @@ const Top = () => {
   const getTopAPI = async () => {
     if (idUser && idUser.value) {
       let result = await axios.get(
-        "./wish-list",
+        './wish-list',
         { params: { id: idUser.value } },
         {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
         }
       );
@@ -98,7 +91,7 @@ const Top = () => {
             {idUser && idUser.value && (
               <i
                 onClick={() => handleLike(value)}
-                className={`ri-heart-fill ${value.like && "like"}`}
+                className={`ri-heart-fill ${value.like && 'like'}`}
               ></i>
             )}
 
@@ -119,4 +112,4 @@ const Top = () => {
   );
 };
 
-ReactDOM.render(<Top />, document.getElementById("top"));
+ReactDOM.render(<Top />, document.getElementById('top'));

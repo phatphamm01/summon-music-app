@@ -12,17 +12,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import models.UserModel;
+import model.UserModel;
 
-@WebFilter(urlPatterns = { "/login", "/signup" })
-public class Logged implements Filter {
+@WebFilter(urlPatterns = { "/wishlist" })
+public class AuthFilter implements Filter {
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
       throws IOException, ServletException {
     HttpServletResponse resp = (HttpServletResponse) response;
 
-    if (this.checkLogin(request, response, chain)) {
-      resp.sendRedirect("home");
+    if (!this.checkLogin(request, response, chain)) {
+      resp.sendRedirect("login");
       return;
     }
 

@@ -1,6 +1,6 @@
 const { useEffect, useState } = React;
 
-let idUser = $("idUser");
+let idUser = $('idUser');
 
 const Top = () => {
   let [data, setData] = useState([]);
@@ -18,14 +18,7 @@ const Top = () => {
 
   const handleClick = (link) => {
     getLinkAPI(link).then(({ audio, name }) => {
-      audioEl.pause();
-      timeRender.style.width = `4.5%`;
-      play.classList.remove("ri-pause-fill");
-      play.classList.add("ri-play-fill");
-      audioEl.currentTime = 0;
-      audioEl.src = audio;
-      download.href = audio;
-      playNameEl.innerText = name;
+      Main.setAudio(audio, name);
     });
   };
 
@@ -46,21 +39,21 @@ const Top = () => {
 
       try {
         await axios.post(
-          "./wish-list",
+          './wish-list',
           { id: idUser.value, name: item.name, img: item.img, link: item.link },
           {
             headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
             },
           }
         );
 
-        options.text = "Update successful !!!";
+        options.text = 'Update successful !!!';
         Toastify(options).showToast();
       } catch (err) {
-        options.text = "Update faild !!!";
-        options.style = { background: "red" };
+        options.text = 'Update faild !!!';
+        options.style = { background: 'red' };
         Toastify(options).showToast();
       }
     }
@@ -72,31 +65,31 @@ const Top = () => {
       .catch(function (error) {
         console.log(error);
       });
-    const html = new DOMParser().parseFromString(response.data, "text/html");
-    let data = html.querySelector(".left-bar");
+    const html = new DOMParser().parseFromString(response.data, 'text/html');
+    let data = html.querySelector('.left-bar');
 
-    data = !!data ? data : html.querySelector(".right-bar");
+    data = !!data ? data : html.querySelector('.right-bar');
 
     if (!data) {
-      console.log("load");
+      console.log('load');
       handleData();
       return;
     }
 
-    let list = Array.from(data.querySelectorAll(".menu"));
+    let list = Array.from(data.querySelectorAll('.menu'));
 
-    let wishlist = getCookie("wishlist");
+    let wishlist = getCookie('wishlist');
     if (wishlist) {
       wishlist = JSON.parse(wishlist);
     }
 
     return list.map((value, index) => {
-      let imgLink = value.querySelector("img").src;
+      let imgLink = value.querySelector('img').src;
       let result = {
         id: index,
         img: imgLink,
-        link: value.querySelector("a").href,
-        name: value.querySelector(".ab.ellipsis.dli").innerText,
+        link: value.querySelector('a').href,
+        name: value.querySelector('.ab.ellipsis.dli').innerText,
         like: false,
       };
 
@@ -116,7 +109,7 @@ const Top = () => {
             {idUser && idUser.value && (
               <i
                 onClick={() => handleLike(value)}
-                className={`ri-heart-fill ${value.like && "like"}`}
+                className={`ri-heart-fill ${value.like && 'like'}`}
               ></i>
             )}
 
@@ -137,4 +130,4 @@ const Top = () => {
   );
 };
 
-ReactDOM.render(<Top />, document.getElementById("top"));
+ReactDOM.render(<Top />, document.getElementById('top'));

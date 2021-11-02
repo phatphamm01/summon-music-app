@@ -1,7 +1,8 @@
-package controllers;
+package controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,34 +15,33 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 
 import DAO.UserDAO;
-import config.UTF8;
-import models.UserModel;
+import model.UserModel;
+import model.WishListModel;
 
 @WebServlet(urlPatterns = "/home")
 public class HomePage extends HttpServlet {
-
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    UTF8.set(req, resp);
+    HttpSession session = req.getSession();
+    UserModel user = (UserModel) session.getAttribute("user");
 
-    this.getUser(req, resp);
+    boolean checkUserIsNull = user != null;
+    if (checkUserIsNull) {
+      Object wList = this.getWishListToUser(user);
+      Cookie cookieWishList = this.createCokieWishList(wList);
+      resp.addCookie(cookieWishList);
+    }
 
     req.getRequestDispatcher("/WEB-INF/views/" + "HomePage.jsp").forward(req, resp);
   }
 
-  private void getUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    HttpSession session = req.getSession();
-    UserModel user = (UserModel) session.getAttribute("user");
-
-    if (user == null) {
-      return;
-    }
-
-    UserDAO userDao = new UserDAO();
+  private Cookie createCokieWishList(Object wList) throws IOException {
     Gson gson = new Gson();
-    Cookie cookieWishList = new Cookie("wishlist",
-        URLEncoder.encode(gson.toJson(userDao.getWishList(user.getId())), "UTF-8"));
+    return new Cookie("wishlist", URLEncoder.encode(gson.toJson(wList), "UTF8"));
+  }
 
-    resp.addCookie(cookieWishList);
+  private ArrayList<WishListModel> getWishListToUser(UserModel user) {
+    UserDAO userDao = new UserDAO();
+    return userDao.getWishList(user.getId());
   }
 }

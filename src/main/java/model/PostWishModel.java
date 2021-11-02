@@ -1,25 +1,21 @@
-package models;
+package model;
 
-public class WishListModel {
+public class PostWishModel {
+  private String id;
   private String name;
   private String single;
   private String img;
   private String link;
 
-  public WishListModel() {
+  public PostWishModel() {
   }
 
-  public WishListModel(String name, String img, String link) {
-    this.name = name;
-    this.img = img;
-    this.link = link;
+  public String getId() {
+    return id;
   }
 
-  public WishListModel(String name, String single, String img, String link) {
-    this.name = name;
-    this.single = single;
-    this.img = img;
-    this.link = link;
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getName() {
